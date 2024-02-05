@@ -74,6 +74,13 @@ public class SortShow extends JPanel {
 			//Using the selection sort to lines_lengths sort the array
 
 			//You need to complete this part.
+			for (int i = 0; i < lines_lengths.length - 1; i++) {
+				int smallestindex = getIndexOfSmallest(i,lines_lengths.length);
+
+				if (smallestindex != i) {
+					swap(i, smallestindex);
+				}
+			}
 
 			//getting the date and time when the selection sort ends
 			Calendar end = Calendar.getInstance();
@@ -85,9 +92,15 @@ public class SortShow extends JPanel {
 		//this method gets the smallest element in the array of lines_lengths
 		public int getIndexOfSmallest(int first, int last){
 
+			int index_of_smallest = first;
 			//You need to complete this part.
+			for (int smallest = lines_lengths[first]; first < last; first++) {
+				if (lines_lengths[first] > smallest) {
+					index_of_smallest = first;
+				}
+			}
 
-			return 1; //modify this line
+			return index_of_smallest; //modify this line
 		}
 		
 	///////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +112,7 @@ public class SortShow extends JPanel {
 			//assigning the size for the tempArray below
 
 			//You need to complete this part.
+
 
 			Calendar end = Calendar.getInstance();
 			//getting the time it took for the iterative merge sort to execute
@@ -112,7 +126,11 @@ public class SortShow extends JPanel {
 			if(first < last){
 
 				//You need to complete this part.
+				int middle = (first + last) / 2;
+				R_MergeSort(first, middle);
+				R_MergeSort(middle, last);
 
+				R_Merge(first, middle, last);
 				//Causing a delay for 10ms
 				delay(10); 
 			}
@@ -123,10 +141,11 @@ public class SortShow extends JPanel {
 		public void R_Merge(int first, int mid, int last){
 
 			//You need to complete this part.
+
 				
 		}
 		
-		//
+		//TEST
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 		
