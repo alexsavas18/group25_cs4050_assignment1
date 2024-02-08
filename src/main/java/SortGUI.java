@@ -319,7 +319,8 @@ public class SortGUI {
 								false);
 
 					} else if (Selection_Done && Iterative_Merge_Done) {
-						Set_Available_Chooses(false, true, false, false);
+						Set_Available_Chooses(false, true, false, true,
+								false);
 
 					} else if (Iterative_Merge_Done && Insertion_Done) {
 						Set_Available_Chooses(true, true, false, false,

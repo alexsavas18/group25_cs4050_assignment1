@@ -104,81 +104,147 @@ public class SortShow extends JPanel {
 		}
 		
 	///////////////////////////////////////////////////////////////////////////////////
-		
-		//recursive merge sort method
-		public void R_MergeSort(){
-			//getting the date and time when the recursive merge sort starts
-			Calendar start = Calendar.getInstance();
-			//assigning the size for the tempArray below
 
+	//recursive merge sort method
+	public void R_MergeSort(){
+		//getting the date and time when the recursive merge sort starts
+		Calendar start = Calendar.getInstance();
+		//assigning the size for the tempArray below
+
+		tempArray = new int[lines_lengths.length];
+		//You need to complete this part.
+
+		R_MergeSort(0, lines_lengths.length - 1);
+
+		Calendar end = Calendar.getInstance();
+		//getting the time it took for the iterative merge sort to execute
+		//subtracting the end time with the start time
+		SortGUI.rmergeTime = end.getTime().getTime() - start.getTime().getTime();
+
+	}
+
+	//recursive merge sort method
+	public void R_MergeSort(int first, int last){
+		if(first < last){
 			//You need to complete this part.
+			int middle = (first + last) / 2;
+			R_MergeSort(first, middle);
+			R_MergeSort(middle, last);
+			R_MergeSort(middle + 1, last);
 
-
-			Calendar end = Calendar.getInstance();
-			//getting the time it took for the iterative merge sort to execute
-			//subtracting the end time with the start time
-	        SortGUI.rmergeTime = end.getTime().getTime() - start.getTime().getTime();
-			
-		}
-		
-		//recursive merge sort method
-		public void R_MergeSort(int first, int last){
-			if(first < last){
-
-				//You need to complete this part.
-				int middle = (first + last) / 2;
-				R_MergeSort(first, middle);
-				R_MergeSort(middle, last);
-
+			if (lines_lengths[middle] >= lines_lengths[middle + 1]) {
 				R_Merge(first, middle, last);
-				//Causing a delay for 10ms
-				delay(10); 
+			}
+
+			R_Merge(first, middle, last);
+			//Causing a delay for 10ms
+			delay(10);
+		}
+	}
+
+	//recursive merge sort method
+	public void R_Merge(int first, int mid, int last){
+
+		//You need to complete this part.
+
+
+		//Index into each respective subarray
+		int firstHalfIndex = first;
+		int secondHalfIndex = mid + 1;
+
+
+		//Start by merging, we assume the two halves of the array we receive are sorted
+		int currentIndex = first; //Need a reusable index variable so we know how far we are in the sorted array
+		for (; (firstHalfIndex <= mid) && (secondHalfIndex <= last); currentIndex++) { //assume first and last are 0 indexed
+
+			if (lines_lengths[firstHalfIndex] < lines_lengths[secondHalfIndex]) {
+				tempArray[currentIndex] = lines_lengths[firstHalfIndex];
+				firstHalfIndex++;
+			}
+
+			else {
+				tempArray[currentIndex] = lines_lengths[secondHalfIndex];
+				secondHalfIndex++;
 			}
 		}
 
-		
-		//recursive merge sort method
-		public void R_Merge(int first, int mid, int last){
 
-			//You need to complete this part.
-
-				
+		//Need to clear out anything left, if our array lengths weren't equal there will be one array that still has elements
+		if (firstHalfIndex > mid) { //if we hit the end of the first half, then we need to clear the other end of the array
+			for (; secondHalfIndex <= last; currentIndex++, secondHalfIndex++) {
+				tempArray[currentIndex] = lines_lengths[secondHalfIndex];
+			}
 		}
-
-
-		public void InsertionSort(int first, int last)
-		{
-			if(first < last)
-			{
-				//sort all but the last element
-				InsertionSort(first, last-1);
-
-				//insert the last element in sorted order
-				InsertInOrder(lines_lengths[last], first, last-1);
+		else { //otherwise, we ran out the second half first and need to finish copying the first half
+			for (; firstHalfIndex <= mid; currentIndex++, firstHalfIndex++) {
+				tempArray[currentIndex] = lines_lengths[firstHalfIndex];
 			}
 		}
 
-		//Function used in insertion sort to insert an element into the sorted array
-		public void InsertInOrder(int element, int start, int end)
+		//copy back
+		for (currentIndex = first; currentIndex <= last; currentIndex++) {
+			lines_lengths[currentIndex] = tempArray[currentIndex];
+		}
+
+		//redrawing the lines_lengths
+		paintComponent(this.getGraphics());
+
+	}
+
+	public void InsertionSort()
+	{
+		//Start the timer
+		Calendar start = Calendar.getInstance();
+
+		//Run the recursive InsertionSort method
+		InsertionSort(0, lines_lengths.length-1);
+
+		//End timer
+		Calendar end = Calendar.getInstance();
+		//Computing the time it took to run insertion sort
+		//Subtract the start time from the end time
+		SortGUI.insertTime = end.getTime().getTime() - start.getTime().getTime();
+	}
+
+	//recursive insertion sort method
+	public void InsertionSort(int first, int last)
+	{
+		if(first < last)
 		{
-			if(element >= lines_lengths[end])
+			//sort all but the last element
+			InsertionSort(first, last-1);
+
+			//insert the last element in sorted order
+			InsertInOrder(lines_lengths[last], first, last-1);
+
+			//add a delay of 10 ms
+			delay(10);
+		}
+	}
+
+	//Function used in insertion sort to insert an element into the sorted array
+	public void InsertInOrder(int element, int start, int end)
+	{
+		if(element >= lines_lengths[end])
+		{
+			lines_lengths[end+1] = element;
+		}
+		else
+		{
+			if(start < end)
 			{
-				lines_lengths[end+1] = element;
+				lines_lengths[end+1] = lines_lengths[end];
+				InsertInOrder(element, start, end-1);
 			}
 			else
 			{
-				if(start < end)
-				{
-					lines_lengths[end+1] = lines_lengths[end];
-					InsertInOrder(element, start, end-1);
-				}
-				else
-				{
-					lines_lengths[end+1] = lines_lengths[end];
-					lines_lengths[end] = element;
-				}
+				lines_lengths[end+1] = lines_lengths[end];
+				lines_lengths[end] = element;
 			}
 		}
+		//Redrawing the lines
+		paintComponent(this.getGraphics());
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 		
