@@ -145,7 +145,7 @@ public class SortShow extends JPanel {
 				
 		}
 
-		public void QuickSort()
+		public void InsertionSort()
 		{
 
 		}
