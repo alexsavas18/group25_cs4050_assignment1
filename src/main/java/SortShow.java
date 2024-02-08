@@ -145,9 +145,39 @@ public class SortShow extends JPanel {
 				
 		}
 
-		public void InsertionSort()
-		{
 
+		public void InsertionSort(int first, int last)
+		{
+			if(first < last)
+			{
+				//sort all but the last element
+				InsertionSort(first, last-1);
+
+				//insert the last element in sorted order
+				InsertInOrder(lines_lengths[last], first, last-1);
+			}
+		}
+
+		//Function used in insertion sort to insert an element into the sorted array
+		public void InsertInOrder(int element, int start, int end)
+		{
+			if(element >= lines_lengths[end])
+			{
+				lines_lengths[end+1] = element;
+			}
+			else
+			{
+				if(start < end)
+				{
+					lines_lengths[end+1] = lines_lengths[end];
+					InsertInOrder(element, start, end-1);
+				}
+				else
+				{
+					lines_lengths[end+1] = lines_lengths[end];
+					lines_lengths[end] = element;
+				}
+			}
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////////////
